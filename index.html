@@ -3,120 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>MMX Pro Timer</title>
+<title>P90X3 Elite Hub</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
   body { 
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
-    background-color: #111111; 
-    color: #ffffff; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: space-between; 
-    height: 100vh; 
-    padding: calc(20px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom)) 20px;
-    text-align: center; 
-    overflow: hidden;
+    background-color: #111111; color: #ffffff; 
+    height: 100vh; overflow: hidden;
+    transition: background-color 0.4s ease;
   }
-  .header-zone { width: 100%; }
-  #round {
-    font-size: 5vw;
-    max-size: 1.5rem;
-    color: #00ccff;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: bold;
+  
+  /* Page Containers */
+  .page {
+    display: none; flex-direction: column; align-items: center; justify-content: space-between;
+    height: 100%; padding: calc(20px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom)) 20px;
+    text-align: center;
   }
-  #exercise { 
-    font-size: 7vw;
-    font-weight: bold;
-    margin-top: 10px;
-    line-height: 1.2;
-    min-height: 2.4em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  #landing-page { display: flex; justify-content: center; gap: 30px; }
+  
+  /* Landing Page Styles */
+  .landing-title { font-size: 8vw; color: #00ccff; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; margin-bottom: 10px; }
+  .landing-subtitle { font-size: 4vw; color: #aaaaaa; margin-bottom: 40px; }
+  .menu-btn {
+    background-color: #222222; border: 2px solid #333333; color: white;
+    padding: 20px; width: 100%; max-width: 350px; font-size: 5vw; font-weight: bold;
+    border-radius: 12px; cursor: pointer; text-transform: uppercase; transition: all 0.2s;
+    margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px;
   }
-  .timer-container {
-    position: relative;
-    width: 65vw;
-    height: 65vw;
-    max-width: 280px;
-    max-height: 280px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .menu-btn:hover { background-color: #333333; transform: scale(1.02); }
+  .menu-btn.mmx { border-color: #ff3333; }
+  .menu-btn.trio { border-color: #ffaa00; }
+  .menu-btn.iso { border-color: #00ff00; }
+  .menu-desc { font-size: 3vw; color: #aaaaaa; font-weight: normal; text-transform: none; }
+
+  /* Timer Page Styles */
+  .header-zone { width: 100%; position: relative; }
+  #home-btn {
+    position: absolute; top: 0; left: 0; background: none; border: none; color: #aaaaaa;
+    font-size: 4vw; text-transform: uppercase; cursor: pointer; padding: 5px; min-width: auto; font-weight: bold;
   }
-  .progress-ring {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-  #timer { 
-    font-size: 16vw; 
-    max-font-size: 5rem;
-    font-weight: bold; 
-    font-variant-numeric: tabular-nums;
-    z-index: 2;
-  }
+  #tier { font-size: 5vw; color: #00ccff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; transition: color 0.3s ease; margin-top: 10px; }
+  #exercise { font-size: 7vw; font-weight: bold; margin-top: 10px; line-height: 1.1; min-height: 2.2em; display: flex; align-items: center; justify-content: center; }
+  #modifier { font-size: 4.5vw; font-style: italic; color: #dddddd; margin-top: 5px; min-height: 1.5em; }
+  
+  .timer-container { position: relative; width: 60vw; height: 60vw; max-width: 260px; max-height: 260px; display: flex; align-items: center; justify-content: center; }
+  .progress-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+  #timer { font-size: 15vw; font-weight: bold; font-variant-numeric: tabular-nums; z-index: 2; }
+  
   .footer-zone { width: 100%; }
-  #next-exercise { 
-    font-size: 4vw; 
-    color: #aaaaaa; 
-    margin-bottom: 15px; 
-    min-height: 1.2em;
-  }
-  .btn-container {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  button { 
-    color: white; 
-    border: none; 
-    padding: 15px 0; 
-    font-size: 4.5vw; 
-    font-weight: bold;
-    cursor: pointer; 
-    border-radius: 10px; 
-    text-transform: uppercase; 
-    flex: 1;
-    min-width: 0;
-  }
-  #start-btn { background-color: #ff3333; flex: 2; }
+  #next-exercise { font-size: 4vw; color: #aaaaaa; margin-bottom: 15px; min-height: 1.2em; }
+  .btn-container { display: flex; gap: 10px; width: 100%; max-width: 400px; margin: 0 auto; }
+  .control-btn { color: white; border: none; padding: 15px 0; font-size: 4.5vw; font-weight: bold; cursor: pointer; border-radius: 10px; text-transform: uppercase; flex: 1; min-width: 0; }
+  #start-btn { background-color: #00ccff; flex: 2; color: #000; }
   #pause-btn { display: none; background-color: #444444; flex: 2; }
   .nav-btn { background-color: #222222; border: 1px solid #333333; }
 </style>
 </head>
 <body>
-  <div class="header-zone">
-    <div id="round">P90X3 MMX</div>
-    <div id="exercise">Ready to Work?</div>
-  </div>
-  
-  <div class="timer-container">
-    <svg class="progress-ring" viewBox="0 0 200 200">
-      <circle stroke="rgba(255, 255, 255, 0.08)" stroke-width="8" fill="transparent" r="85" cx="100" cy="100"/>
-      <circle id="moving-bar" stroke="#ffffff" stroke-width="8" fill="transparent" r="85" cx="100" cy="100" stroke-linecap="round" style="transition: stroke-dashoffset 1s linear, stroke 0.3s ease;"/>
-    </svg>
-    <div id="timer">00:00</div>
+
+  <!-- LANDING PAGE -->
+  <div id="landing-page" class="page">
+    <div>
+      <div class="landing-title">P90X3 Elite Hub</div>
+      <div class="landing-subtitle">Select your protocol</div>
+    </div>
+    
+    <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+      <button class="menu-btn mmx" onclick="loadWorkout('mmx')">
+        MMX
+        <span class="menu-desc">Mixed Martial Arts Cardio</span>
+      </button>
+      <button class="menu-btn trio" onclick="loadWorkout('trio')">
+        TRIOMETRICS
+        <span class="menu-desc">Plyometric Power Tiers</span>
+      </button>
+      <button class="menu-btn iso" onclick="loadWorkout('iso')">
+        ISOMETRIX
+        <span class="menu-desc">45s Core & Stability Holds</span>
+      </button>
+    </div>
+    <div></div>
   </div>
 
-  <div class="footer-zone">
-    <div id="next-exercise">Prepare your stance.</div>
-    <div class="btn-container">
-      <button class="nav-btn" onclick="prevExercise()">Back</button>
-      <button id="start-btn" onclick="startRoutine()">Start</button>
-      <button id="pause-btn" onclick="togglePause()">Pause</button>
-      <button class="nav-btn" onclick="nextExercise()">Next</button>
+  <!-- TIMER PAGE -->
+  <div id="timer-page" class="page">
+    <div class="header-zone">
+      <button id="home-btn" onclick="goHome()">&#8592; Menu</button>
+      <div id="tier">TIER</div>
+      <div id="exercise">Ready to Work?</div>
+      <div id="modifier">Modifier</div>
+    </div>
+    
+    <div class="timer-container">
+      <svg class="progress-ring" viewBox="0 0 200 200">
+        <circle stroke="rgba(255, 255, 255, 0.08)" stroke-width="10" fill="transparent" r="85" cx="100" cy="100"/>
+        <circle id="moving-bar" stroke="#00ccff" stroke-width="10" fill="transparent" r="85" cx="100" cy="100" stroke-linecap="round" style="transition: stroke-dashoffset 1s linear, stroke 0.3s ease;"/>
+      </svg>
+      <div id="timer">00:00</div>
+    </div>
+
+    <div class="footer-zone">
+      <div id="next-exercise">Prepare your space.</div>
+      <div class="btn-container">
+        <button class="control-btn nav-btn" onclick="prevExercise()">Back</button>
+        <button id="start-btn" class="control-btn" onclick="startRoutine()">Start</button>
+        <button id="pause-btn" class="control-btn" onclick="togglePause()">Pause</button>
+        <button class="control-btn nav-btn" onclick="nextExercise()">Next</button>
+      </div>
     </div>
   </div>
 
@@ -126,6 +120,7 @@
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
     }
+    
     function playBeep(type) {
       if (!audioCtx) return;
       const osc = audioCtx.createOscillator();
@@ -144,52 +139,150 @@
       }
     }
 
-    const baseExercises = [
-      { name: "High & Low Jab/Cross", round: 1 }, { name: "Hook/Uppercut/Front Knee", round: 1 }, { name: "Triple Jab/Cross/Back Knee", round: 1 }, { name: "Hook Elbow/Down Elbow", round: 1 },
-      { name: "Jab/Over-Top Elbow/Crescent Kick", round: 2 }, { name: "Superman Punch/4-Punch Sprawl", round: 2 }, { name: "Lead Upper/Hook Elbow/Snap Kick", round: 2 }, { name: "Sprawl/Power Knees/Hook & Upper Elbow", round: 2 },
-      { name: "Upper Back Elbow/Hook Elbow/Back Kick", round: 3 }, { name: "Jab/Cross/Sprawl/Hook/Upper/Sprawl", round: 3 }, { name: "Push Kick/Snap Kick", round: 3 }, { name: "Hook/Upper/Hook/Upper/Sprawl", round: 3 },
-      { name: "Front Leg Check/Snap Kick/Superman", round: 4 }, { name: "Jab/Cross/Sprawl/Scramble 180°", round: 4 }, { name: "Jab/Cross/Hook Elbow/Over-Top Elbow", round: 4 }, { name: "Gladiator/Sprawl/4-Punch Combo", round: 4 }
-    ];
+    // --- WORKOUT DATA GENERATORS ---
 
-    const sequence = [{ name: "GET READY", time: 10, round: "PREP", isRest: true }];
-    for (let r = 1; r <= 4; r++) {
-      const roundEx = baseExercises.filter(ex => ex.round === r);
-      for (let i = 0; i < roundEx.length; i++) {
-        sequence.push({ name: roundEx[i].name + " (Side 1)", time: 30, round: "Round " + r, isRest: false });
-        sequence.push({ name: "SWITCH LEADS!", time: 5, round: "Round " + r, isRest: true, isSwitch: true });
-        sequence.push({ name: roundEx[i].name + " (Side 2)", time: 30, round: "Round " + r, isRest: false, colorAlert: true });
-        if (i < roundEx.length - 1) sequence.push({ name: "TRANSITION", time: 10, round: "Round " + r, isRest: true });
+    function getMMXSequence() {
+      const baseEx = [
+        { name: "High & Low Jab/Cross", round: 1 }, { name: "Hook/Uppercut/Front Knee", round: 1 }, { name: "Triple Jab/Cross/Back Knee", round: 1 }, { name: "Hook Elbow/Down Elbow", round: 1 },
+        { name: "Jab/Over-Top Elbow/Crescent Kick", round: 2 }, { name: "Superman Punch/4-Punch Sprawl", round: 2 }, { name: "Lead Upper/Hook Elbow/Snap Kick", round: 2 }, { name: "Sprawl/Power Knees/Hook & Upper Elbow", round: 2 },
+        { name: "Upper Back Elbow/Hook Elbow/Back Kick", round: 3 }, { name: "Jab/Cross/Sprawl/Hook/Upper/Sprawl", round: 3 }, { name: "Push Kick/Snap Kick", round: 3 }, { name: "Hook/Upper/Hook/Upper/Sprawl", round: 3 },
+        { name: "Front Leg Check/Snap Kick/Superman", round: 4 }, { name: "Jab/Cross/Sprawl/Scramble 180°", round: 4 }, { name: "Jab/Cross/Hook Elbow/Over-Top Elbow", round: 4 }, { name: "Gladiator/Sprawl/4-Punch Combo", round: 4 }
+      ];
+      const seq = [{ name: "GET READY", desc: "Fighter Stance", time: 10, maxTime: 10, tier: "PREP", isRest: true, color: "#ff3333", bg: "#111111" }];
+      for (let r = 1; r <= 4; r++) {
+        const roundEx = baseEx.filter(ex => ex.round === r);
+        for (let i = 0; i < roundEx.length; i++) {
+          seq.push({ name: roundEx[i].name + " (Side 1)", desc: "", time: 30, maxTime: 30, tier: "ROUND " + r, isRest: false, isFirst: true, color: "#ffffff", bg: "#1a0a0a" });
+          seq.push({ name: "SWITCH LEADS!", desc: "", time: 5, maxTime: 5, tier: "SWITCH", isRest: true, color: "#ff3333", bg: "#111111" });
+          seq.push({ name: roundEx[i].name + " (Side 2)", desc: "", time: 30, maxTime: 30, tier: "ROUND " + r, isRest: false, color: "#ff3333", bg: "#1a0a0a" });
+          if (i < roundEx.length - 1) seq.push({ name: "TRANSITION", desc: "Keep moving", time: 10, maxTime: 10, tier: "REST", isRest: true, color: "#00ccff", bg: "#111111" });
+        }
+        if (r < 4) seq.push({ name: "REST & RECOVER", desc: "Breathe", time: 60, maxTime: 60, tier: "ROUND COMPLETE", isRest: true, color: "#00ccff", bg: "#111111" });
       }
-      if (r < 4) sequence.push({ name: "REST & RECOVER", time: 60, round: "Round " + r + " Done", isRest: true });
+      seq.push({ name: "WORKOUT COMPLETE!", desc: "Submission was not an option.", time: 0, maxTime: 1, tier: "VICTORY", isRest: true, color: "#00ff00", bg: "#0a2e0a" });
+      return seq;
     }
-    sequence.push({ name: "WORKOUT COMPLETE!", time: 0, round: "VICTORY", isRest: true });
 
-    let currentIndex = 0, timeLeft = sequence[0].time, timerInterval, isRunning = false, isPaused = false;
-    const circle = document.getElementById('moving-bar'), circumference = 85 * 2 * Math.PI;
+    function getTrioSequence() {
+      const rawEx = [
+        { name: "Calf Raise Squats", type: "single", levels: ["Reach", "Touch", "Fists"] },
+        { name: "The Duper Skater", type: "double", levels: ["Reach", "Reach, Kick", "Tap floor, Kick"] },
+        { name: "Frog Jumps", type: "single", levels: ["Fingertips to prayer", "Fists to floor, fists to sky", "Palms to floor, tuck jump"] },
+        { name: "Warrior 3 Squats", type: "double", levels: ["Step", "Skip", "Jump"] },
+        { name: "Sumo Kick", type: "single", levels: ["Fingers", "Fists", "Palms"] },
+        { name: "Run Stance Squats", type: "single", levels: ["Step", "Touch floor", "Pogo"] },
+        { name: "Iso Squat", type: "double", levels: ["Foot behind", "Foot next to", "Foot front"] },
+        { name: "Slater Squat", type: "single", levels: ["Step on board", "Jump up", "Jump up and add tuck jump"] },
+        { name: "Duper 2", type: "double", levels: ["Leg out to knee up", "Leg out to knee up & tap floor", "Leg remains out & tap floor"] },
+        { name: "Jack Squats", type: "single", levels: ["Reaching", "Tapping", "Tapping, X jump"] },
+        { name: "Hell's Chair", type: "single", levels: ["Right leg lifts", "Left leg lifts", "Feet together"] },
+        { name: "Kablam", type: "single", levels: ["Step to step (arms at prayer)", "Arms up skip", "Arms moving, jump"] }
+      ];
+      const seq = [{ name: "PREPARE TO WORK", desc: "Clear your space", time: 10, maxTime: 10, tier: "WARM UP", isRest: true, color: "#ffaa00", bg: "#111111" }];
+      function addTiers(name, levels, isFirstBlock) {
+        seq.push({ name: name, desc: levels[0], time: 20, maxTime: 20, tier: "LEVEL 1 (EASY)", isRest: false, isFirst: isFirstBlock, color: "#00ff00", bg: "#0a2e0a" });
+        seq.push({ name: name, desc: levels[1], time: 20, maxTime: 20, tier: "LEVEL 2 (MEDIUM)", isRest: false, color: "#ffaa00", bg: "#331a00" });
+        seq.push({ name: name, desc: levels[2], time: 20, maxTime: 20, tier: "LEVEL 3 (HARD)", isRest: false, color: "#ff3333", bg: "#330000" });
+      }
+      rawEx.forEach((ex, index) => {
+        if (ex.type === "single") { addTiers(ex.name, ex.levels, true); } 
+        else {
+           addTiers(ex.name + " (Right)", ex.levels, true);
+           seq.push({ name: "SWITCH SIDES", desc: "Get ready for the left side", time: 5, maxTime: 5, tier: "TRANSITION", isRest: true, color: "#ffaa00", bg: "#111111" });
+           addTiers(ex.name + " (Left)", ex.levels, false);
+        }
+        if (index < rawEx.length - 1) seq.push({ name: "REST & BREATHE", desc: "Shake it out", time: 10, maxTime: 10, tier: "RECOVERY", isRest: true, color: "#00ccff", bg: "#111111" });
+      });
+      seq.push({ name: "WORKOUT COMPLETE!", desc: "Excellent power.", time: 0, maxTime: 1, tier: "VICTORY", isRest: true, color: "#00ff00", bg: "#0a2e0a" });
+      return seq;
+    }
+
+    function getIsoSequence() {
+      const rawEx = [
+        { name: "1. Plank, Left Arm Reach", desc: "Modify: Limit height of arm" }, { name: "2. Standing Left Leg Extension", desc: "Modify: Keep slight bend in knee" },
+        { name: "3. Plank, Right Arm Reach", desc: "Modify: Limit height of arm" }, { name: "4. Standing Right Leg Extension", desc: "Modify: Keep slight bend in knee" },
+        { name: "5. Plank Right Arm, Left Leg Lift", desc: "Modify: Limit height of arm/leg" }, { name: "6. Chair, Left Leg Extended Forward", desc: "Modify: Hands to prayer" },
+        { name: "7. Plank Left Arm, Right Leg Lift", desc: "Modify: Limit height of arm/leg" }, { name: "8. Chair, Right Leg Extended Forward", desc: "Modify: Hands to prayer" },
+        { name: "9. Forearm Side Balance, Right", desc: "Modify: Do not stack feet" }, { name: "10. Royal Dancer, Right", desc: "Modify: Limit height of leg" },
+        { name: "11. Forearm Side Balance, Left", desc: "Modify: Do not stack feet" }, { name: "12. Royal Dancer, Left", desc: "Modify: Limit height of leg" },
+        { name: "13. One Arm Sphinx, Right", desc: "Modify: Limit height of arm" }, { name: "14. Tree Pose, Right", desc: "Modify: Place heel lower" },
+        { name: "15. One Arm Sphinx, Left", desc: "Modify: Limit height of arm" }, { name: "16. Tree Pose, Left", desc: "Modify: Place heel lower" },
+        { name: "17. Side Arm Balance (R), Left Leg", desc: "Modify: Limit height of leg" }, { name: "18. Warrior 3, Right", desc: "Modify: Airplane/arms to sides" },
+        { name: "19. Side Arm Balance (L), Right Leg", desc: "Modify: Limit height of leg" }, { name: "20. Warrior 3, Left", desc: "Modify: Airplane/arms to sides" },
+        { name: "21. Bound Dog, Right Hand Left Ankle", desc: "Modify: Hand to calf" }, { name: "22. Inner Balance, Right", desc: "Modify: Keep left foot low" },
+        { name: "23. Bound Dog, Left Hand Right Ankle", desc: "Modify: Hand to calf" }, { name: "24. Inner Balance, Left", desc: "Modify: Keep left foot low" },
+        { name: "25. Bound Dog Leg Lift, Right", desc: "Modify: Hand to calf/limit leg" }, { name: "26. Moon Dog, Right", desc: "Modify: Arms narrow" },
+        { name: "27. Bound Dog Leg Lift, Left", desc: "Modify: Hand to calf/limit leg" }, { name: "28. Moon Dog, Left", desc: "Modify: Arms narrow" }
+      ];
+      const seq = [{ name: "PREPARE TO WORK", desc: "Find your balance", time: 10, maxTime: 10, tier: "WARM UP", isRest: true, color: "#00ff00", bg: "#111111" }];
+      rawEx.forEach((ex, index) => {
+        seq.push({ name: ex.name, desc: ex.desc, time: 45, maxTime: 45, tier: "ISOMETRIC HOLD (45s)", isRest: false, isFirst: true, color: "#00ff00", bg: "#0a2e0a" });
+        if (index < rawEx.length - 1) seq.push({ name: "REST & TRANSITION", desc: "Shake it out", time: 10, maxTime: 10, tier: "RECOVERY", isRest: true, color: "#00ccff", bg: "#111111" });
+      });
+      seq.push({ name: "WORKOUT COMPLETE!", desc: "Excellent stability.", time: 0, maxTime: 1, tier: "VICTORY", isRest: true, color: "#00ff00", bg: "#0a2e0a" });
+      return seq;
+    }
+
+    // --- APP LOGIC ---
+
+    let sequence = [], currentIndex = 0, timeLeft = 0, timerInterval, isRunning = false, isPaused = false;
+    const circle = document.getElementById('moving-bar');
+    const circumference = 85 * 2 * Math.PI;
     circle.style.strokeDasharray = `${circumference} ${circumference}`;
 
-    function updateDisplay() {
-      const cur = sequence[currentIndex];
-      document.getElementById('round').innerText = cur.round;
-      const exDiv = document.getElementById('exercise');
-      exDiv.innerText = cur.name;
+    function loadWorkout(type) {
+      initAudio();
+      if (type === 'mmx') sequence = getMMXSequence();
+      if (type === 'trio') sequence = getTrioSequence();
+      if (type === 'iso') sequence = getIsoSequence();
+
+      document.getElementById('landing-page').style.display = 'none';
+      document.getElementById('timer-page').style.display = 'flex';
+
+      currentIndex = 0; timeLeft = sequence[0].time;
+      isRunning = false; isPaused = false; clearInterval(timerInterval);
       
-      let color = "#ffffff";
-      if (cur.colorAlert || cur.isSwitch) color = "#ff3333";
-      else if (cur.isRest && cur.time > 0) color = "#00ccff";
-      else if (cur.time === 0) color = "#00ff00";
+      const startBtn = document.getElementById('start-btn');
+      startBtn.style.display = 'inline-block'; startBtn.innerText = 'START';
+      document.getElementById('pause-btn').style.display = 'none';
       
-      exDiv.style.color = color; circle.style.stroke = color;
-      document.getElementById('timer').innerText = `${Math.floor(timeLeft / 60).toString().padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`;
-      circle.style.strokeDashoffset = cur.time > 0 ? circumference - (timeLeft / cur.time) * circumference : 0;
-      
-      let nextText = "Finish Strong!";
+      circle.style.transition = 'none';
+      circle.style.strokeDashoffset = 0;
+      updateDisplay();
+    }
+
+    function goHome() {
+      clearInterval(timerInterval);
+      document.getElementById('timer-page').style.display = 'none';
+      document.getElementById('landing-page').style.display = 'flex';
+      document.body.style.backgroundColor = "#111111";
+    }
+
+    function getNextExerciseText() {
       for (let i = currentIndex + 1; i < sequence.length; i++) {
-        if (!sequence[i].isRest && !sequence[i].name.includes("Side 2")) {
-          nextText = "Next: " + sequence[i].name.replace(" (Side 1)", ""); break;
-        }
+        if (sequence[i].isFirst) return "Up Next: " + sequence[i].name.replace(" (Side 1)", "");
       }
-      document.getElementById('next-exercise').innerText = cur.time === 0 ? "" : nextText;
+      return "Finish Strong!";
+    }
+
+    function updateDisplay() {
+      if(!sequence[currentIndex]) return;
+      const cur = sequence[currentIndex];
+      
+      document.body.style.backgroundColor = cur.bg;
+      document.getElementById('tier').innerText = cur.tier;
+      document.getElementById('tier').style.color = cur.color;
+      
+      document.getElementById('exercise').innerText = cur.name;
+      document.getElementById('modifier').innerText = cur.desc || "";
+      
+      circle.style.stroke = cur.color;
+      document.getElementById('timer').innerText = `${Math.floor(timeLeft / 60).toString().padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`;
+      
+      const percent = cur.maxTime > 0 ? (timeLeft / cur.maxTime) : 0;
+      circle.style.strokeDashoffset = circumference - (percent * circumference);
+      
+      document.getElementById('next-exercise').innerText = cur.time === 0 ? "" : getNextExerciseText();
     }
 
     function tick() {
@@ -210,7 +303,8 @@
     }
 
     function startRoutine() {
-      initAudio(); document.getElementById('start-btn').style.display = 'none';
+      initAudio(); 
+      document.getElementById('start-btn').style.display = 'none';
       document.getElementById('pause-btn').style.display = 'inline-block';
       isRunning = true; updateDisplay(); timerInterval = setInterval(tick, 1000);
     }
@@ -220,11 +314,11 @@
       initAudio(); isPaused = !isPaused;
       const btn = document.getElementById('pause-btn');
       if (isPaused) {
-        clearInterval(timerInterval); btn.innerText = "Resume"; btn.style.backgroundColor = "#ff9900";
-        document.getElementById('timer').style.color = "#ff9900"; circle.style.stroke = "#ff9900";
+        clearInterval(timerInterval); btn.innerText = "Resume"; 
+        btn.style.backgroundColor = "#ffaa00"; document.body.style.backgroundColor = "#1a1a1a";
       } else {
-        timerInterval = setInterval(tick, 1000); btn.innerText = "Pause"; btn.style.backgroundColor = "#444444";
-        document.getElementById('timer').style.color = "#ffffff"; updateDisplay();
+        timerInterval = setInterval(tick, 1000); btn.innerText = "Pause"; 
+        btn.style.backgroundColor = "#444444"; updateDisplay();
       }
     }
 
@@ -233,9 +327,18 @@
       circle.style.transition = 'none';
       setTimeout(() => { circle.style.transition = 'stroke-dashoffset 1s linear, stroke 0.3s ease'; updateDisplay(); }, 50);
     }
-    function nextExercise() { if (currentIndex < sequence.length - 2) jump(currentIndex + 1); }
-    function prevExercise() { if (currentIndex > 0) jump(currentIndex - 1); }
-    updateDisplay();
+    
+    function nextExercise() { 
+      for(let i = currentIndex + 1; i < sequence.length; i++) {
+        if(sequence[i].isFirst || sequence[i].time === 0) { jump(i); return; }
+      }
+    }
+    function prevExercise() { 
+      for(let i = currentIndex - 1; i >= 0; i--) {
+        if(sequence[i].isFirst) { jump(i); return; }
+      }
+      jump(0);
+    }
   </script>
 </body>
 </html>
